@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jadwal Sholat Digital Masjid - Universal Edition</title>
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f7e089;
+            --frame-wood: #1f1105;
+            --frame-inner: #0d0803;
+            --screen-bg: #030a06;
+            --led-green: #00ff66;
+            --led-red: #ff3333;
+            --led-amber: #ffaa00;
+            --led-cyan: #00e5ff;
+            --text-glow-green: 0 0 10px rgba(0, 255, 102, 0.7);
+            --text-glow-red: 0 0 10px rgba(255, 51, 51, 0.7);
+            --text-glow-amber: 0 0 10px rgba(255, 170, 0, 0.7);
+            --text-glow-cyan: 0 0 10px rgba(0, 229, 255, 0.7);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: #050505;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 8px;
+        }
+
+        .tv-chassis {
+            width: 100%;
+            max-width: 1400px;
+            min-height: 94vh;
+            background: linear-gradient(145deg, #2b1809, #140b04);
+            border: 6px solid #3d230d;
+            box-shadow: 
+                0 0 0 3px var(--gold-primary),
+                0 15px 35px rgba(0, 0, 0, 0.9),
+                inset 0 0 25px rgba(0, 0, 0, 0.8);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: radial-gradient(circle, #102619 0%, #05120a 100%);
+            border: 2px solid var(--gold-primary);
+            border-radius: 12px;
+            padding: 12px 20px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .masjid-title h1 {
+            font-size: clamp(1.2rem, 2.4vw, 2.2rem);
+            color: var(--gold-light);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            letter-spacing: 1px;
+        }
+
+        .masjid-title p {
+            font-size: clamp(0.8rem, 1.2vw, 1.1rem);
+            color: #a3c2a8;
+            margin-top: 2px;
+        }
+
+        .clock-container {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .digital-clock {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: clamp(2rem, 3.5vw, 3.2rem);
+            font-weight: 900;
+            color: var(--led-red);
+            text-shadow: var(--text-glow-red);
+            line-height: 1;
+        }
+
+        .calendar-container {
+            margin-top: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+        }
+
+        .calendar-badge-hijri {
+            font-size: clamp(0.85rem, 1.3vw, 1.25rem);
+            font-weight: bold;
+            color: var(--gold-light);
+            text-shadow: 0 0 6px rgba(247, 224, 137, 0.5);
+        }
+
+        .calendar-badge-masehi {
+            font-size: clamp(0.75rem, 1vw, 1rem);
+            color: #c2e2cc;
+        }
+
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            flex: 1;
+            margin-bottom: 12px;
+        }
+
+        .prayer-card {
+            background: #040d07;
+            border: 2px solid #1a3823;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 6px;
+            box-shadow: inset 0 0 10px rgba(0, 255, 102, 0.1), 0 4px 10px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .prayer-card.active {
+            border-color: var(--gold-primary);
+            background: radial-gradient(circle, #1b3d26 0%, #06170d 100%);
+            box-shadow: 0 0 18px rgba(212, 175, 55, 0.6);
+            transform: scale(1.02);
+        }
+
+        .prayer-name-ar {
+            font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+            color: var(--gold-primary);
+            margin-bottom: 2px;
+        }
+
+        .prayer-name-id {
+            font-size: clamp(0.85rem, 1.2vw, 1.2rem);
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #d1e7dd;
+            margin-bottom: 8px;
+        }
+
+        .prayer-time {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: clamp(1.6rem, 2.6vw, 2.5rem);
+            font-weight: bold;
+            color: var(--led-green);
+            text-shadow: var(--text-glow-green);
+        }
+
+        .status-banner {
+            background: #020804;
+            border: 2px solid #234d31;
+            border-radius: 8px;
+            padding: 10px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .status-left-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-label {
+            font-size: clamp(0.95rem, 1.3vw, 1.2rem);
+            color: var(--gold-light);
+            font-weight: bold;
+        }
+
+        .countdown-display {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: clamp(1.5rem, 2.3vw, 2.2rem);
+            font-weight: 900;
+            color: var(--led-amber);
+            text-shadow: var(--text-glow-amber);
+        }
+
+        .countdown-display.sholat-mode {
+            color: var(--led-cyan);
+            text-shadow: var(--text-glow-cyan);
+        }
+
+        .status-desc {
+            color: #66e090;
+            font-size: clamp(0.85rem, 1.2vw, 1.2rem);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .marquee-box {
+            background: #000;
+            border: 1px solid var(--gold-primary);
+            border-radius: 6px;
+            padding: 6px 12px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            font-size: clamp(0.85rem, 1.2vw, 1.25rem);
+            color: var(--gold-light);
+            animation: marquee 28s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        :focus {
+            outline: 3px solid var(--gold-light);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 4px;
+                align-items: flex-start;
+                overflow-y: auto;
+            }
+
+            .tv-chassis {
+                min-height: auto;
+                padding: 10px;
+                border-width: 4px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .masjid-title {
+                text-align: center;
+            }
+
+            .clock-container {
+                text-align: center;
+                margin-top: 6px;
+            }
+
+            .calendar-container {
+                align-items: center;
+            }
+
+            .prayer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .prayer-card:last-child {
+                grid-column: span 2;
+            }
+
+            .status-banner {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .status-desc {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body tabindex="0">
+
+    <div class="tv-chassis">
+        <header class="header">
+            <div class="masjid-title">
+                <h1 id="namaMasjid">MASJID MIFTAHUL MAULANA</h1>
+                <p id="lokasiMasjid">Bekasi, Jawa Barat | Waktu Indonesia Barat (WIB)</p>
+            </div>
+            <div class="clock-container">
+                <div class="digital-clock" id="jamDigital">00:00:00</div>
+                <div class="calendar-container">
+                    <div class="calendar-badge-hijri" id="tanggalHijriyah">Memuat Hijriyah...</div>
+                    <div class="calendar-badge-masehi" id="tanggalMasehi">Memuat Masehi...</div>
+                </div>
+            </div>
+        </header>
+
+        <main class="prayer-grid">
+            <div class="prayer-card" id="card-imsak">
+                <span class="prayer-name-ar">الإمساك</span>
+                <span class="prayer-name-id">Imsak</span>
+                <span class="prayer-time" id="time-imsak">04:05</span>
+            </div>
+            <div class="prayer-card" id="card-subuh">
+                <span class="prayer-name-ar">الفجر</span>
+                <span class="prayer-name-id">Subuh</span>
+                <span class="prayer-time" id="time-subuh">04:15</span>
+            </div>
+            <div class="prayer-card" id="card-syuruq">
+                <span class="prayer-name-ar">الشروq</span>
+                <span class="prayer-name-id">Syuruq</span>
+                <span class="prayer-time" id="time-syuruq" style="color: var(--led-amber);">05:32</span>
+            </div>
+            <div class="prayer-card" id="card-dzuhur">
+                <span class="prayer-name-ar">الظهر</span>
+                <span class="prayer-name-id">Dzuhur</span>
+                <span class="prayer-time" id="time-dzuhur">11:48</span>
+            </div>
+            <div class="prayer-card" id="card-ashar">
+                <span class="prayer-name-ar">العصر</span>
+                <span class="prayer-name-id">Ashar</span>
+                <span class="prayer-time" id="time-ashar">15:05</span>
+            </div>
+            <div class="prayer-card" id="card-maghrib">
+                <span class="prayer-name-ar">المغرب</span>
+                <span class="prayer-name-id">Maghrib</span>
+                <span class="prayer-time" id="time-maghrib">17:55</span>
+            </div>
+            <div class="prayer-card" id="card-isya">
+                <span class="prayer-name-ar">العشاء</span>
+                <span class="prayer-name-id">Isya'</span>
+                <span class="prayer-time" id="time-isya">19:07</span>
+            </div>
+        </main>
+
+        <section class="status-banner">
+            <div class="status-left-box">
+                <span class="status-label" id="statusLabel">MENUJU SHOLAT:</span>
+                <span class="countdown-display sholat-mode" id="statusTimer">00:00:00</span>
+            </div>
+            <div class="status-desc">
+                <span id="nextPrayerNotice">Menghitung waktu sholat berikutnya...</span>
+            </div>
+        </section>
+
+        <footer class="marquee-box">
+            <div class="marquee-content">
+                ✦ Luruskan dan rapatkan shaf demi kesempurnaan sholat berjamaah ✦ Biasakan Sholat di Awal Waktu dan Diutamakan di Masjid ✦ Jagalah kebersihan tempat wudhu dan kesucian masjid ✦
+            </div>
+        </footer>
+    </div>
+
+    <!-- Elemen Audio Adzan & Iqomah -->
+    <audio id="audioAdzanSubuh" preload="auto" src="https://www.islamcan.com/audio/adhan/subuh.mp3"></audio>
+    <audio id="audioAdzanStandar" preload="auto" src="https://www.islamcan.com/audio/adhan/azan1.mp3"></audio>
+    <audio id="audioIqomah" preload="auto" src="https://www.islamcan.com/audio/adhan/iqama.mp3"></audio>
+
+    <script>
+        // Data Jadwal Sholat Cadangan (Fallback Offline)
+        let jadwal = {
+            imsak: "04:05",
+            subuh: "04:15",
+            syuruq: "05:32",
+            dzuhur: "11:48",
+            ashar: "15:05",
+            maghrib: "17:55",
+            isya: "19:07"
+        };
+
+        const durasiIqomah = {
+            subuh: 12,
+            dzuhur: 10,
+            ashar: 10,
+            maghrib: 8,
+            isya: 10
+        };
+
+        const KOREKSI_HIJRIYAH = 0; 
+        let sedangIqomah = false;
+        let sisaDetikIqomah = 0;
+        let iqomahCountdown = null;
+        let tanggalTerakhirFetch = '';
+
+        // Konfigurasi Lokasi Default: Bekasi (Metode Kemenag RI / Aladhan API)
+        const KOTA_LOKASI = 'Bekasi';
+        const NEGARA_LOKASI = 'Indonesia';
+        const METODE_KEMENAG = 11; // 11 = Majlis Ugama Islam Singapura / Kemenag standard calculation
+
+        async function muatJadwalSholatAPI() {
+            const today = new Date();
+            const dateKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+            
+            // Periksa cache lokal hari ini agar hemat kuota
+            const cachedData = localStorage.getItem('jadwal_sholat_' + dateKey);
+            if (cachedData) {
+                try {
+                    jadwal = JSON.parse(cachedData);
+                    perbaruiTampilanJadwal();
+                    return;
+                } catch (e) {}
+            }
+
+            try {
+                const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(KOTA_LOKASI)}&country=${encodeURIComponent(NEGARA_LOKASI)}&method=${METODE_KEMENAG}`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (data && data.code === 200 && data.data && data.data.timings) {
+                    const timings = data.data.timings;
+                    jadwal = {
+                        imsak: timings.Imsak ? timings.Imsak.substring(0, 5) : jadwal.imsak,
+                        subuh: timings.Fajr ? timings.Fajr.substring(0, 5) : jadwal.subuh,
+                        syuruq: timings.Sunrise ? timings.Sunrise.substring(0, 5) : jadwal.syuruq,
+                        dzuhur: timings.Dhuhr ? timings.Dhuhr.substring(0, 5) : jadwal.dzuhur,
+                        ashar: timings.Asr ? timings.Asr.substring(0, 5) : jadwal.ashar,
+                        maghrib: timings.Maghrib ? timings.Maghrib.substring(0, 5) : jadwal.maghrib,
+                        isya: timings.Isha ? timings.Isha.substring(0, 5) : jadwal.isya
+                    };
+
+                    localStorage.setItem('jadwal_sholat_' + dateKey, JSON.stringify(jadwal));
+                    perbaruiTampilanJadwal();
+                    console.log('Jadwal sholat berhasil diperbarui dari API untuk wilayah:', KOTA_LOKASI);
+                }
+            } catch (err) {
+                console.warn('Gagal memuat API sholat. Menggunakan jadwal cadangan offline:', err);
+                perbaruiTampilanJadwal();
+            }
+        }
+
+        function perbaruiTampilanJadwal() {
+            for (let nama in jadwal) {
+                const el = document.getElementById(`time-${nama}`);
+                if (el) el.innerText = jadwal[nama];
+            }
+        }
+
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) audioCtx = new AudioContext();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+
+        function bunyikanBuzzer(frekuensi = 880, durasiDetik = 0.8) {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(frekuensi, ctx.currentTime);
+
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + durasiDetik);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + durasiDetik);
+            } catch (e) {
+                console.error("Gagal buzzer:", e);
+            }
+        }
+
+        function putarAdzan(namaSholat) {
+            bunyikanBuzzer(880, 1.5);
+            setTimeout(() => {
+                let audioPlayer = (namaSholat === 'subuh') 
+                    ? document.getElementById('audioAdzanSubuh') 
+                    : document.getElementById('audioAdzanStandar');
+
+                if (audioPlayer) {
+                    audioPlayer.currentTime = 0;
+                    audioPlayer.play().catch(err => {
+                        console.warn("Autoplay terhalang kebijakan browser:", err);
+                    });
+                }
+            }, 1500);
+        }
+
+        function putarAudioIqomah() {
+            bunyikanBuzzer(1000, 2.0);
+            const audioIqomah = document.getElementById('audioIqomah');
+            if (audioIqomah) {
+                audioIqomah.currentTime = 0;
+                audioIqomah.play().catch(err => console.warn(err));
+            }
+        }
+
+        function padZero(num) {
+            return num < 10 ? '0' + num : num;
+        }
+
+        function getTanggalHijriyah(dateObj, koreksiHari = 0) {
+            const date = new Date(dateObj.getTime());
+            if (koreksiHari !== 0) date.setDate(date.getDate() + koreksiHari);
+
+            try {
+                const formatter = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                let formatted = formatter.format(date);
+                if (!formatted.includes('H')) formatted += ' H';
+                return formatted;
+            } catch (err) {
+                return "15 Sya'ban 1447 H";
+            }
+        }
+
+        function highlightCard(nama) {
+            document.querySelectorAll('.prayer-card').forEach(c => c.classList.remove('active'));
+            const card = document.getElementById(`card-${nama}`);
+            if (card) card.classList.add('active');
+        }
+
+        function updateHitungMundurSholat(now) {
+            if (sedangIqomah) return;
+
+            const listUrutan = ['imsak', 'subuh', 'syuruq', 'dzuhur', 'ashar', 'maghrib', 'isya'];
+            let targetSholat = null;
+            let targetDate = null;
+
+            for (let i = 0; i < listUrutan.length; i++) {
+                const nama = listUrutan[i];
+                const [jamStr, mntStr] = jadwal[nama].split(':');
+                const pDate = new Date(now);
+                pDate.setHours(parseInt(jamStr), parseInt(mntStr), 0, 0);
+
+                if (pDate > now) {
+                    targetSholat = nama;
+                    targetDate = pDate;
+                    break;
+                }
+            }
+
+            if (!targetSholat) {
+                targetSholat = 'imsak';
+                const [jamStr, mntStr] = jadwal.imsak.split(':');
+                targetDate = new Date(now);
+                targetDate.setDate(targetDate.getDate() + 1);
+                targetDate.setHours(parseInt(jamStr), parseInt(mntStr), 0, 0);
+            }
+
+            highlightCard(targetSholat);
+
+            const selisihMs = targetDate - now;
+            const totalDetik = Math.max(0, Math.floor(selisihMs / 1000));
+
+            const jam = padZero(Math.floor(totalDetik / 3600));
+            const menit = padZero(Math.floor((totalDetik % 3600) / 60));
+            const detik = padZero(totalDetik % 60);
+
+            const timerEl = document.getElementById('statusTimer');
+            const labelEl = document.getElementById('statusLabel');
+            const noticeEl = document.getElementById('nextPrayerNotice');
+
+            labelEl.innerText = "MENUJU SHOLAT:";
+            timerEl.className = "countdown-display sholat-mode";
+            timerEl.innerText = `-${jam}:${menit}:${detik}`;
+            noticeEl.innerText = `Menuju waktu ${targetSholat.toUpperCase()} (${jadwal[targetSholat]})`;
+        }
+
+        function periksaMasukWaktuSholat(currentTimeStr) {
+            for (let nama in jadwal) {
+                if (jadwal[nama] === currentTimeStr) {
+                    highlightCard(nama);
+                    if (nama !== 'syuruq' && nama !== 'imsak') {
+                        putarAdzan(nama);
+                        mulaiIqomah(nama);
+                    } else {
+                        bunyikanBuzzer(600, 2.0);
+                    }
+                }
+            }
+        }
+
+        function mulaiIqomah(namaSholat) {
+            sedangIqomah = true;
+            const menit = durasiIqomah[namaSholat] || 10;
+            sisaDetikIqomah = menit * 60;
+
+            const timerEl = document.getElementById('statusTimer');
+            const labelEl = document.getElementById('statusLabel');
+            const noticeEl = document.getElementById('nextPrayerNotice');
+
+            labelEl.innerText = "JEDA IQOMAH:";
+            timerEl.className = "countdown-display";
+            noticeEl.innerText = `Masuk waktu ${namaSholat.toUpperCase()}! Bersiap Sholat Berjamaah.`;
+
+            if (iqomahCountdown) clearInterval(iqomahCountdown);
+
+            iqomahCountdown = setInterval(() => {
+                const m = padZero(Math.floor(sisaDetikIqomah / 60));
+                const s = padZero(sisaDetikIqomah % 60);
+                timerEl.innerText = `${m}:${s}`;
+
+                if (sisaDetikIqomah <= 10 && sisaDetikIqomah > 0) {
+                    bunyikanBuzzer(900, 0.2);
+                }
+
+                if (sisaDetikIqomah <= 0) {
+                    clearInterval(iqomahCountdown);
+                    timerEl.innerText = "IQOMAH!";
+                    noticeEl.innerText = "Luruskan dan rapatkan shaf sholat!";
+                    putarAudioIqomah();
+                    
+                    setTimeout(() => {
+                        sedangIqomah = false;
+                    }, 45000);
+                }
+
+                sisaDetikIqomah--;
+            }, 1000);
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const jam = padZero(now.getHours());
+            const menit = padZero(now.getMinutes());
+            const detik = padZero(now.getSeconds());
+            
+            document.getElementById('jamDigital').innerText = `${jam}:${menit}:${detik}`;
+
+            const opsiMasehi = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('tanggalMasehi').innerText = now.toLocaleDateString('id-ID', opsiMasehi);
+            document.getElementById('tanggalHijriyah').innerText = getTanggalHijriyah(now, KOREKSI_HIJRIYAH);
+
+            updateHitungMundurSholat(now);
+
+            // Cek pergantian hari tengah malam untuk memuat ulang API otomatis
+            const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+            if (tanggalTerakhirFetch !== todayStr) {
+                tanggalTerakhirFetch = todayStr;
+                muatJadwalSholatAPI();
+            }
+
+            const currentTimeStr = `${jam}:${menit}`;
+            if (detik === '00') {
+                periksaMasukWaktuSholat(currentTimeStr);
+            }
+        }
+
+        async function aktifkanWakeLock() {
+            try {
+                if ('wakeLock' in navigator) {
+                    await navigator.wakeLock.request('screen');
+                }
+            } catch (err) {}
+        }
+
+        function unlockAudio() {
+            getAudioContext();
+            const audios = ['audioAdzanSubuh', 'audioAdzanStandar', 'audioIqomah'];
+            audios.forEach(id => {
+                const a = document.getElementById(id);
+                if (a) {
+                    a.play().then(() => {
+                        a.pause();
+                        a.currentTime = 0;
+                    }).catch(() => {});
+                }
+            });
+        }
+
+        window.addEventListener('keydown', unlockAudio);
+        window.addEventListener('click', unlockAudio);
+        window.addEventListener('touchstart', unlockAudio, { passive: true });
+
+        // Inisialisasi awal
+        muatJadwalSholatAPI();
+        setInterval(updateClock, 1000);
+        updateClock();
+        aktifkanWakeLock();
+    </script>
+</body>
+</html>
