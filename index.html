@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Jadwal Sholat Digital Masjid - Universal Edition</title>
+    <title>Jadwal Sholat Digital Masjid - Auto Location & Multi-Theme</title>
     <style>
+        /* 5 PILIHAN TEMA WARNA MASJID */
         :root {
+            /* Default: Tema 1 - Hijau Zamrud & Kayu Emas (Klasik Masjid Nabawi) */
             --gold-primary: #d4af37;
             --gold-light: #f7e089;
-            --frame-wood: #1f1105;
-            --frame-inner: #0d0803;
+            --frame-wood: #2b1809;
+            --frame-dark: #140b04;
+            --frame-border: #3d230d;
             --screen-bg: #030a06;
+            --header-grad-1: #102619;
+            --header-grad-2: #05120a;
+            --card-bg: #040d07;
+            --card-border: #1a3823;
+            --card-active-1: #1b3d26;
+            --card-active-2: #06170d;
             --led-green: #00ff66;
             --led-red: #ff3333;
             --led-amber: #ffaa00;
@@ -19,6 +28,126 @@
             --text-glow-red: 0 0 10px rgba(255, 51, 51, 0.7);
             --text-glow-amber: 0 0 10px rgba(255, 170, 0, 0.7);
             --text-glow-cyan: 0 0 10px rgba(0, 229, 255, 0.7);
+        }
+
+        /* Tema 2: Biru Royal & Perak Safir */
+        body[data-theme="royal-blue"] {
+            --gold-primary: #4da3ff;
+            --gold-light: #b3d9ff;
+            --frame-wood: #0b1a2e;
+            --frame-dark: #050d17;
+            --frame-border: #142a4a;
+            --screen-bg: #020710;
+            --header-grad-1: #0a2540;
+            --header-grad-2: #030d1a;
+            --card-bg: #040e1c;
+            --card-border: #133257;
+            --card-active-1: #164070;
+            --card-active-2: #071526;
+            --led-green: #00f0ff;
+            --led-red: #ff3b5c;
+            --led-amber: #ffd000;
+            --led-cyan: #70c4ff;
+            --text-glow-green: 0 0 10px rgba(0, 240, 255, 0.7);
+            --text-glow-red: 0 0 10px rgba(255, 59, 92, 0.7);
+            --text-glow-amber: 0 0 10px rgba(255, 208, 0, 0.7);
+            --text-glow-cyan: 0 0 10px rgba(112, 196, 255, 0.7);
+        }
+
+        /* Tema 3: Hitam Onyx & Emas Murni (Elegan Kiswah Ka'bah) */
+        body[data-theme="kiswah-black"] {
+            --gold-primary: #e6b800;
+            --gold-light: #fff2a3;
+            --frame-wood: #141414;
+            --frame-dark: #000000;
+            --frame-border: #292929;
+            --screen-bg: #000000;
+            --header-grad-1: #1f1f1f;
+            --header-grad-2: #080808;
+            --card-bg: #0d0d0d;
+            --card-border: #332b00;
+            --card-active-1: #2e2600;
+            --card-active-2: #0f0c00;
+            --led-green: #00ff88;
+            --led-red: #ff2222;
+            --led-amber: #ffbb00;
+            --led-cyan: #ffdd44;
+            --text-glow-green: 0 0 10px rgba(0, 255, 136, 0.7);
+            --text-glow-red: 0 0 10px rgba(255, 34, 34, 0.7);
+            --text-glow-amber: 0 0 10px rgba(255, 187, 0, 0.7);
+            --text-glow-cyan: 0 0 10px rgba(255, 221, 68, 0.7);
+        }
+
+        /* Tema 4: Merah Maroon & Tembaga Hangat (Masjid Ottoman / Cordova) */
+        body[data-theme="ottoman-maroon"] {
+            --gold-primary: #e59866;
+            --gold-light: #fcd5b5;
+            --frame-wood: #2e0808;
+            --frame-dark: #170404;
+            --frame-border: #4a1010;
+            --screen-bg: #0a0202;
+            --header-grad-1: #380b0b;
+            --header-grad-2: #140303;
+            --card-bg: #140505;
+            --card-border: #421616;
+            --card-active-1: #521818;
+            --card-active-2: #1f0808;
+            --led-green: #66ff99;
+            --led-red: #ff4747;
+            --led-amber: #ffaa33;
+            --led-cyan: #ffd166;
+            --text-glow-green: 0 0 10px rgba(102, 255, 153, 0.7);
+            --text-glow-red: 0 0 10px rgba(255, 71, 71, 0.7);
+            --text-glow-amber: 0 0 10px rgba(255, 170, 51, 0.7);
+            --text-glow-cyan: 0 0 10px rgba(255, 209, 102, 0.7);
+        }
+
+        /* Tema 5: Putih Marmer Modern Minimalis */
+        body[data-theme="white-marble"] {
+            --gold-primary: #a67c1e;
+            --gold-light: #59420d;
+            --frame-wood: #eceff1;
+            --frame-dark: #cfd8dc;
+            --frame-border: #b0bec5;
+            --screen-bg: #f8fafc;
+            --header-grad-1: #ffffff;
+            --header-grad-2: #e2e8f0;
+            --card-bg: #ffffff;
+            --card-border: #cbd5e1;
+            --card-active-1: #e2e8f0;
+            --card-active-2: #cbd5e1;
+            --led-green: #0b8043;
+            --led-red: #c5221f;
+            --led-amber: #b06000;
+            --led-cyan: #0277bd;
+            --text-glow-green: none;
+            --text-glow-red: none;
+            --text-glow-amber: none;
+            --text-glow-cyan: none;
+        }
+
+        body[data-theme="white-marble"] {
+            color: #1e293b;
+            background-color: #cbd5e1;
+        }
+        body[data-theme="white-marble"] .masjid-title p {
+            color: #475569;
+        }
+        body[data-theme="white-marble"] .prayer-name-id {
+            color: #334155;
+        }
+        body[data-theme="white-marble"] .calendar-badge-masehi {
+            color: #475569;
+        }
+        body[data-theme="white-marble"] .status-desc {
+            color: #0b8043;
+        }
+        body[data-theme="white-marble"] .status-banner {
+            background: #ffffff;
+            border-color: #cbd5e1;
+        }
+        body[data-theme="white-marble"] .marquee-box {
+            background: #f1f5f9;
         }
 
         * {
@@ -30,23 +159,23 @@
         }
 
         body {
-            background-color: #050505;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #fff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow-x: hidden;
             padding: 8px;
+            transition: background 0.4s ease;
         }
 
+        /* Frame 3D Masjid Responsif */
         .tv-chassis {
             width: 100%;
             max-width: 1400px;
             min-height: 94vh;
-            background: linear-gradient(145deg, #2b1809, #140b04);
-            border: 6px solid #3d230d;
+            background: linear-gradient(145deg, var(--frame-wood), var(--frame-dark));
+            border: 6px solid var(--frame-border);
             box-shadow: 
                 0 0 0 3px var(--gold-primary),
                 0 15px 35px rgba(0, 0, 0, 0.9),
@@ -56,13 +185,15 @@
             flex-direction: column;
             padding: 16px;
             position: relative;
+            transition: all 0.4s ease;
         }
 
+        /* Header Masjid */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: radial-gradient(circle, #102619 0%, #05120a 100%);
+            background: radial-gradient(circle, var(--header-grad-1) 0%, var(--header-grad-2) 100%);
             border: 2px solid var(--gold-primary);
             border-radius: 12px;
             padding: 12px 20px;
@@ -82,6 +213,18 @@
             font-size: clamp(0.8rem, 1.2vw, 1.1rem);
             color: #a3c2a8;
             margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .loc-badge {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold-primary);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: var(--gold-light);
         }
 
         .clock-container {
@@ -118,6 +261,7 @@
             color: #c2e2cc;
         }
 
+        /* Grid Jadwal Sholat */
         .prayer-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -127,21 +271,21 @@
         }
 
         .prayer-card {
-            background: #040d07;
-            border: 2px solid #1a3823;
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
             border-radius: 12px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 12px 6px;
-            box-shadow: inset 0 0 10px rgba(0, 255, 102, 0.1), 0 4px 10px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 10px rgba(0, 255, 102, 0.08), 0 4px 10px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
         }
 
         .prayer-card.active {
             border-color: var(--gold-primary);
-            background: radial-gradient(circle, #1b3d26 0%, #06170d 100%);
+            background: radial-gradient(circle, var(--card-active-1) 0%, var(--card-active-2) 100%);
             box-shadow: 0 0 18px rgba(212, 175, 55, 0.6);
             transform: scale(1.02);
         }
@@ -168,9 +312,10 @@
             text-shadow: var(--text-glow-green);
         }
 
+        /* Status Banner */
         .status-banner {
-            background: #020804;
-            border: 2px solid #234d31;
+            background: var(--screen-bg);
+            border: 2px solid var(--card-border);
             border-radius: 8px;
             padding: 10px 18px;
             display: flex;
@@ -213,6 +358,7 @@
             text-align: right;
         }
 
+        /* Running Text (Marquee) */
         .marquee-box {
             background: #000;
             border: 1px solid var(--gold-primary);
@@ -220,6 +366,7 @@
             padding: 6px 12px;
             overflow: hidden;
             white-space: nowrap;
+            position: relative;
         }
 
         .marquee-content {
@@ -234,6 +381,155 @@
             100% { transform: translateX(-100%); }
         }
 
+        /* Tombol Buka Panel Pengaturan */
+        .btn-settings-toggle {
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-light);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+            transition: transform 0.2s, background 0.2s;
+        }
+        .btn-settings-toggle:hover {
+            transform: scale(1.1);
+            background: var(--gold-primary);
+            color: #000;
+        }
+
+        /* Modal Pengaturan */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal-box {
+            background: #141b16;
+            border: 2px solid var(--gold-primary);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 580px;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: #fff;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+        }
+        .modal-title {
+            font-size: 1.4rem;
+            color: var(--gold-light);
+            border-bottom: 1px solid #334d3b;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-close-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--gold-light);
+            margin-bottom: 6px;
+        }
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 10px;
+            background: #080d09;
+            border: 1px solid #2b4533;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+        .form-textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+        .theme-previews {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .theme-btn {
+            padding: 8px 4px;
+            font-size: 0.78rem;
+            font-weight: bold;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            color: #fff;
+            transition: all 0.2s;
+        }
+        .theme-btn.active {
+            border-color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        .theme-btn-classic { background: linear-gradient(135deg, #1b3d26, #2b1809); color: #d4af37; }
+        .theme-btn-blue { background: linear-gradient(135deg, #0a2540, #142a4a); color: #70c4ff; }
+        .theme-btn-black { background: linear-gradient(135deg, #1f1f1f, #000); color: #e6b800; }
+        .theme-btn-maroon { background: linear-gradient(135deg, #380b0b, #170404); color: #e59866; }
+        .theme-btn-white { background: linear-gradient(135deg, #ffffff, #cfd8dc); color: #1e293b; }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-save {
+            background: var(--gold-primary);
+            color: #000;
+            border: none;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .btn-cancel {
+            background: #2b3b2f;
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
         :focus {
             outline: 3px solid var(--gold-light);
         }
@@ -244,48 +540,36 @@
                 align-items: flex-start;
                 overflow-y: auto;
             }
-
             .tv-chassis {
                 min-height: auto;
                 padding: 10px;
                 border-width: 4px;
             }
-
             .header {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
                 padding: 10px;
             }
-
-            .masjid-title {
-                text-align: center;
-            }
-
             .clock-container {
                 text-align: center;
                 margin-top: 6px;
             }
-
             .calendar-container {
                 align-items: center;
             }
-
             .prayer-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 8px;
             }
-
             .prayer-card:last-child {
                 grid-column: span 2;
             }
-
             .status-banner {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
             }
-
             .status-desc {
                 text-align: center;
             }
@@ -298,7 +582,10 @@
         <header class="header">
             <div class="masjid-title">
                 <h1 id="namaMasjid">MASJID MIFTAHUL MAULANA</h1>
-                <p id="lokasiMasjid">Bekasi, Jawa Barat | Waktu Indonesia Barat (WIB)</p>
+                <p>
+                    <span id="lokasiMasjid">Bekasi, Jawa Barat</span> | <span id="waktuZona">WIB</span>
+                    <span class="loc-badge" id="locBadge">Otomatis Lokasi Aktif</span>
+                </p>
             </div>
             <div class="clock-container">
                 <div class="digital-clock" id="jamDigital">00:00:00</div>
@@ -321,7 +608,7 @@
                 <span class="prayer-time" id="time-subuh">04:15</span>
             </div>
             <div class="prayer-card" id="card-syuruq">
-                <span class="prayer-name-ar">الشروq</span>
+                <span class="prayer-name-ar">الشروق</span>
                 <span class="prayer-name-id">Syuruq</span>
                 <span class="prayer-time" id="time-syuruq" style="color: var(--led-amber);">05:32</span>
             </div>
@@ -357,11 +644,69 @@
             </div>
         </section>
 
+        <!-- Running Text -->
         <footer class="marquee-box">
-            <div class="marquee-content">
+            <div class="marquee-content" id="runningTextDisplay">
                 ✦ Luruskan dan rapatkan shaf demi kesempurnaan sholat berjamaah ✦ Biasakan Sholat di Awal Waktu dan Diutamakan di Masjid ✦ Jagalah kebersihan tempat wudhu dan kesucian masjid ✦
             </div>
         </footer>
+    </div>
+
+    <!-- Tombol Mengambang Pengaturan (Settings) -->
+    <button class="btn-settings-toggle" id="btnOpenSettings" title="Pengaturan Tampilan & Running Text">⚙️</button>
+
+    <!-- Modal Pengaturan Fasilitas Update Running Text & Tema -->
+    <div class="modal-overlay" id="modalSettings">
+        <div class="modal-box">
+            <div class="modal-title">
+                <span>Pengaturan Tampilan & Lokasi</span>
+                <button class="modal-close-btn" id="btnCloseSettings">&times;</button>
+            </div>
+
+            <!-- Fasilitas 1: Update Running Text -->
+            <div class="form-group">
+                <label class="form-label" for="inputRunningText">1. Update Pesan Running Text (Warta Masjid):</label>
+                <textarea class="form-textarea" id="inputRunningText" placeholder="Masukkan teks pengumuman atau pesan berjalan..."></textarea>
+                <small style="color: #94a3b8; font-size: 0.8rem;">Tips: Gunakan simbol ✦ atau • untuk memisahkan pengumuman.</small>
+            </div>
+
+            <!-- Fasilitas 2: Pilihan 5 Tema -->
+            <div class="form-group">
+                <label class="form-label">2. Pilih Tema Warna Tampilan (5 Tema):</label>
+                <div class="theme-previews">
+                    <button type="button" class="theme-btn theme-btn-classic active" data-theme-name="classic-gold">1. Nabawi<br>(Hijau-Emas)</button>
+                    <button type="button" class="theme-btn theme-btn-blue" data-theme-name="royal-blue">2. Safir<br>(Biru Royal)</button>
+                    <button type="button" class="theme-btn theme-btn-black" data-theme-name="kiswah-black">3. Kiswah<br>(Hitam-Emas)</button>
+                    <button type="button" class="theme-btn theme-btn-maroon" data-theme-name="ottoman-maroon">4. Ottoman<br>(Maroon-Warm)</button>
+                    <button type="button" class="theme-btn theme-btn-white" data-theme-name="white-marble">5. Marmer<br>(Putih Modern)</button>
+                </div>
+            </div>
+
+            <!-- Fasilitas 3: Pengaturan Lokasi Presisi -->
+            <div class="form-group">
+                <label class="form-label" for="inputNamaMasjid">Nama Masjid:</label>
+                <input type="text" class="form-input" id="inputNamaMasjid">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="inputKotaMasjid">Kota / Wilayah Acuan Jadwal (Fallback/Manual):</label>
+                <input type="text" class="form-input" id="inputKotaMasjid" placeholder="Contoh: Bekasi">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <input type="checkbox" id="chkAutoGPS" checked> Gunakan Deteksi Lokasi Otomatis (GPS / Jaringan)
+                </label>
+                <small style="color: #94a3b8; font-size: 0.8rem; display:block; margin-top:4px;">
+                    Jika dicentang, jadwal sholat akan otomatis menyesuaikan koordinat lintang & bujur lokasi perangkat Anda secara akurat.
+                </small>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" id="btnCancelSettings">Batal</button>
+                <button type="button" class="btn-save" id="btnSaveSettings">Simpan Perubahan</button>
+            </div>
+        </div>
     </div>
 
     <!-- Elemen Audio Adzan & Iqomah -->
@@ -370,7 +715,19 @@
     <audio id="audioIqomah" preload="auto" src="https://www.islamcan.com/audio/adhan/iqama.mp3"></audio>
 
     <script>
-        // Data Jadwal Sholat Cadangan (Fallback Offline)
+        // Default Config & Fallback Bekasi
+        const DEFAULT_RUNNING_TEXT = "✦ Luruskan dan rapatkan shaf demi kesempurnaan sholat berjamaah ✦ Biasakan Sholat di Awal Waktu dan Diutamakan di Masjid ✦ Jagalah kebersihan tempat wudhu dan kesucian masjid ✦";
+        const DEFAULT_THEME = "classic-gold";
+        const DEFAULT_MASJID = "MASJID MIFTAHUL MAULANA";
+        const DEFAULT_KOTA = "Bekasi";
+        const DEFAULT_LAT = -6.2383;
+        const DEFAULT_LNG = 106.9756;
+
+        let selectedTheme = localStorage.getItem('app_theme') || DEFAULT_THEME;
+        let kotaLokasi = localStorage.getItem('app_kota') || DEFAULT_KOTA;
+        let useAutoGPS = localStorage.getItem('app_auto_gps') !== 'false';
+
+        // Jadwal Awal (Fallback)
         let jadwal = {
             imsak: "04:05",
             subuh: "04:15",
@@ -395,50 +752,136 @@
         let iqomahCountdown = null;
         let tanggalTerakhirFetch = '';
 
-        // Konfigurasi Lokasi Default: Bekasi (Metode Kemenag RI / Aladhan API)
-        const KOTA_LOKASI = 'Bekasi';
-        const NEGARA_LOKASI = 'Indonesia';
-        const METODE_KEMENAG = 11; // 11 = Majlis Ugama Islam Singapura / Kemenag standard calculation
+        function terapkanTema(themeName) {
+            selectedTheme = themeName;
+            if (themeName === 'classic-gold') {
+                document.body.removeAttribute('data-theme');
+            } else {
+                document.body.setAttribute('data-theme', themeName);
+            }
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                if (btn.getAttribute('data-theme-name') === themeName) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
 
-        async function muatJadwalSholatAPI() {
+        function inisialisasiPengaturan() {
+            terapkanTema(selectedTheme);
+
+            const savedText = localStorage.getItem('app_running_text') || DEFAULT_RUNNING_TEXT;
+            document.getElementById('runningTextDisplay').innerText = savedText;
+            document.getElementById('inputRunningText').value = savedText;
+
+            const savedMasjid = localStorage.getItem('app_nama_masjid') || DEFAULT_MASJID;
+            document.getElementById('namaMasjid').innerText = savedMasjid;
+            document.getElementById('inputNamaMasjid').value = savedMasjid;
+
+            document.getElementById('inputKotaMasjid').value = kotaLokasi;
+            document.getElementById('chkAutoGPS').checked = useAutoGPS;
+            document.getElementById('lokasiMasjid').innerText = `${kotaLokasi}, Jawa Barat`;
+        }
+
+        // FUNGSI UTAMA: Ambil Jadwal Sesuai Lokasi Saat Ini (GPS / Koordinat / Kota)
+        async function sinkronisasiJadwalLokasi() {
+            if (useAutoGPS && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        document.getElementById('locBadge').innerText = `GPS Aktif: ${lat.toFixed(2)}, ${lng.toFixed(2)}`;
+                        await muatJadwalSholatKoordinat(lat, lng);
+                    },
+                    async (err) => {
+                        console.warn("Geolocation tidak diizinkan atau tidak didukung TV. Beralih ke kota acuan:", err.message);
+                        document.getElementById('locBadge').innerText = `Lokasi: ${kotaLokasi}`;
+                        await muatJadwalSholatKota(kotaLokasi);
+                    },
+                    { timeout: 8000, maximumAge: 3600000 }
+                );
+            } else {
+                document.getElementById('locBadge').innerText = `Lokasi: ${kotaLokasi}`;
+                await muatJadwalSholatKota(kotaLokasi);
+            }
+        }
+
+        // Ambil Jadwal berdasarkan Koordinat Presisi Saat Ini
+        async function muatJadwalSholatKoordinat(lat, lng) {
             const today = new Date();
-            const dateKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+            const dateKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}_coord_${lat.toFixed(2)}_${lng.toFixed(2)}`;
             
-            // Periksa cache lokal hari ini agar hemat kuota
-            const cachedData = localStorage.getItem('jadwal_sholat_' + dateKey);
-            if (cachedData) {
+            const cached = localStorage.getItem('jadwal_sholat_' + dateKey);
+            if (cached) {
                 try {
-                    jadwal = JSON.parse(cachedData);
+                    jadwal = JSON.parse(cached);
                     perbaruiTampilanJadwal();
                     return;
-                } catch (e) {}
+                } catch(e) {}
             }
 
             try {
-                const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(KOTA_LOKASI)}&country=${encodeURIComponent(NEGARA_LOKASI)}&method=${METODE_KEMENAG}`;
+                // Method 11 = Kemenag RI / Majlis Ugama Islam Singapura
+                const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=11`;
                 const res = await fetch(url);
                 const data = await res.json();
 
                 if (data && data.code === 200 && data.data && data.data.timings) {
-                    const timings = data.data.timings;
-                    jadwal = {
-                        imsak: timings.Imsak ? timings.Imsak.substring(0, 5) : jadwal.imsak,
-                        subuh: timings.Fajr ? timings.Fajr.substring(0, 5) : jadwal.subuh,
-                        syuruq: timings.Sunrise ? timings.Sunrise.substring(0, 5) : jadwal.syuruq,
-                        dzuhur: timings.Dhuhr ? timings.Dhuhr.substring(0, 5) : jadwal.dzuhur,
-                        ashar: timings.Asr ? timings.Asr.substring(0, 5) : jadwal.ashar,
-                        maghrib: timings.Maghrib ? timings.Maghrib.substring(0, 5) : jadwal.maghrib,
-                        isya: timings.Isha ? timings.Isha.substring(0, 5) : jadwal.isya
-                    };
-
-                    localStorage.setItem('jadwal_sholat_' + dateKey, JSON.stringify(jadwal));
-                    perbaruiTampilanJadwal();
-                    console.log('Jadwal sholat berhasil diperbarui dari API untuk wilayah:', KOTA_LOKASI);
+                    simpanDanTerapkanJadwal(data.data.timings, dateKey);
+                    if (data.data.meta && data.data.meta.timezone) {
+                        const tz = data.data.meta.timezone;
+                        document.getElementById('waktuZona').innerText = tz.includes('Jakarta') ? 'WIB' : (tz.includes('Makassar') ? 'WITA' : 'WIT');
+                    }
                 }
             } catch (err) {
-                console.warn('Gagal memuat API sholat. Menggunakan jadwal cadangan offline:', err);
+                console.warn("Gagal memuat API koordinat, mencoba fallback kota:", err);
+                muatJadwalSholatKota(kotaLokasi);
+            }
+        }
+
+        // Ambil Jadwal berdasarkan Nama Kota (Fallback / Manual)
+        async function muatJadwalSholatKota(namaKota) {
+            const today = new Date();
+            const dateKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}_city_${namaKota}`;
+
+            const cached = localStorage.getItem('jadwal_sholat_' + dateKey);
+            if (cached) {
+                try {
+                    jadwal = JSON.parse(cached);
+                    perbaruiTampilanJadwal();
+                    return;
+                } catch(e) {}
+            }
+
+            try {
+                const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(namaKota)}&country=Indonesia&method=11`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (data && data.code === 200 && data.data && data.data.timings) {
+                    simpanDanTerapkanJadwal(data.data.timings, dateKey);
+                }
+            } catch (err) {
+                console.warn("API Sholat offline. Menggunakan jadwal lokal cadangan:", err);
                 perbaruiTampilanJadwal();
             }
+        }
+
+        function simpanDanTerapkanJadwal(timings, cacheKey) {
+            jadwal = {
+                imsak: timings.Imsak ? timings.Imsak.substring(0, 5) : jadwal.imsak,
+                subuh: timings.Fajr ? timings.Fajr.substring(0, 5) : jadwal.subuh,
+                syuruq: timings.Sunrise ? timings.Sunrise.substring(0, 5) : jadwal.syuruq,
+                dzuhur: timings.Dhuhr ? timings.Dhuhr.substring(0, 5) : jadwal.dzuhur,
+                ashar: timings.Asr ? timings.Asr.substring(0, 5) : jadwal.ashar,
+                maghrib: timings.Maghrib ? timings.Maghrib.substring(0, 5) : jadwal.maghrib,
+                isya: timings.Isha ? timings.Isha.substring(0, 5) : jadwal.isya
+            };
+
+            localStorage.setItem('jadwal_sholat_' + cacheKey, JSON.stringify(jadwal));
+            perbaruiTampilanJadwal();
+            console.log("Jadwal sholat berhasil sinkron sesuai lokasi saat ini:", jadwal);
         }
 
         function perbaruiTampilanJadwal() {
@@ -448,6 +891,7 @@
             }
         }
 
+        // Web Audio Context
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx = null;
 
@@ -488,9 +932,7 @@
 
                 if (audioPlayer) {
                     audioPlayer.currentTime = 0;
-                    audioPlayer.play().catch(err => {
-                        console.warn("Autoplay terhalang kebijakan browser:", err);
-                    });
+                    audioPlayer.play().catch(err => console.warn(err));
                 }
             }, 1500);
         }
@@ -646,11 +1088,11 @@
 
             updateHitungMundurSholat(now);
 
-            // Cek pergantian hari tengah malam untuk memuat ulang API otomatis
+            // Re-fetch saat pergantian tengah malam
             const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
             if (tanggalTerakhirFetch !== todayStr) {
                 tanggalTerakhirFetch = todayStr;
-                muatJadwalSholatAPI();
+                sinkronisasiJadwalLokasi();
             }
 
             const currentTimeStr = `${jam}:${menit}`;
@@ -667,8 +1109,14 @@
             } catch (err) {}
         }
 
-        function unlockAudio() {
+        function unlockAudioAndFullscreen() {
             getAudioContext();
+
+            // Masuk mode Fullscreen otomatis saat interaksi pertama jika didukung
+            if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            }
+
             const audios = ['audioAdzanSubuh', 'audioAdzanStandar', 'audioIqomah'];
             audios.forEach(id => {
                 const a = document.getElementById(id);
@@ -681,12 +1129,75 @@
             });
         }
 
-        window.addEventListener('keydown', unlockAudio);
-        window.addEventListener('click', unlockAudio);
-        window.addEventListener('touchstart', unlockAudio, { passive: true });
+        // EVENT LISTENER PENGATURAN / MODAL
+        const modal = document.getElementById('modalSettings');
+        const btnOpen = document.getElementById('btnOpenSettings');
+        const btnClose = document.getElementById('btnCloseSettings');
+        const btnCancel = document.getElementById('btnCancelSettings');
+        const btnSave = document.getElementById('btnSaveSettings');
 
-        // Inisialisasi awal
-        muatJadwalSholatAPI();
+        btnOpen.addEventListener('click', () => {
+            modal.classList.add('open');
+        });
+
+        function tutupModal() {
+            modal.classList.remove('open');
+        }
+
+        btnClose.addEventListener('click', tutupModal);
+        btnCancel.addEventListener('click', tutupModal);
+
+        let pendingTheme = selectedTheme;
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                pendingTheme = btn.getAttribute('data-theme-name');
+                terapkanTema(pendingTheme);
+            });
+        });
+
+        btnSave.addEventListener('click', () => {
+            const newText = document.getElementById('inputRunningText').value.trim();
+            const newMasjid = document.getElementById('inputNamaMasjid').value.trim();
+            const newKota = document.getElementById('inputKotaMasjid').value.trim();
+            const autoGPS = document.getElementById('chkAutoGPS').checked;
+
+            if (newText) {
+                localStorage.setItem('app_running_text', newText);
+                document.getElementById('runningTextDisplay').innerText = newText;
+            }
+
+            if (newMasjid) {
+                localStorage.setItem('app_nama_masjid', newMasjid);
+                document.getElementById('namaMasjid').innerText = newMasjid;
+            }
+
+            localStorage.setItem('app_theme', pendingTheme);
+            localStorage.setItem('app_auto_gps', autoGPS);
+            useAutoGPS = autoGPS;
+
+            if (newKota) {
+                kotaLokasi = newKota;
+                localStorage.setItem('app_kota', newKota);
+                document.getElementById('lokasiMasjid').innerText = `${newKota}, Jawa Barat`;
+            }
+
+            sinkronisasiJadwalLokasi();
+            tutupModal();
+        });
+
+        window.addEventListener('keydown', (e) => {
+            unlockAudioAndFullscreen();
+            if (e.key === 'm' || e.key === 'M' || e.keyCode === 77 || e.keyCode === 48) {
+                modal.classList.toggle('open');
+            }
+        });
+
+        window.addEventListener('click', unlockAudioAndFullscreen);
+        window.addEventListener('touchstart', unlockAudioAndFullscreen, { passive: true });
+
+        // Mulai aplikasi
+        inisialisasiPengaturan();
+        sinkronisasiJadwalLokasi();
         setInterval(updateClock, 1000);
         updateClock();
         aktifkanWakeLock();
